@@ -15,55 +15,62 @@ const Search = ({ searchResults }) => {
   const formattedEndDate = format(new Date(endDate), "dd MMMM yy");
   const range = `${formattedStartDate} - ${formattedEndDate}`;
 
+  const coordinates = (listings) => {
+    return listings.map((listing) => ({ latitude: listing.lat, longitude: listing.long }));
+  };
+
   return (
     <div className="h-screen">
       <Header placeholder={`${location} | ${range} | ${numberGuests} guests`} />
 
-      <main className="flex flex-col">
-        <section className="flex-grow pt-14 px-6">
-          <p className="text-xs">
-            300+ Stays — {range} — for ${numberGuests} guests
-          </p>
-          <h1 className="text-3xl font-semibold mt-2 mb-6">Stays in {location}</h1>
+      <main className="flex flex-col xl:flex-row">
+        <div>
+          <section className="flex-grow pt-14 px-6">
+            <p className="text-xs">
+              300+ Stays — {range} — for {numberGuests} {numberGuests > 1 ? "guests" : "guest"}
+            </p>
+            <h1 className="text-3xl font-semibold mt-2 mb-6">Stays in {location}</h1>
 
-          <div className="hidden lg:inline-flex mb-5 space-x-3 text-gray-800 whitespace-nowrap">
-            {[
-              "Cancellation Flexibility",
-              "Type of place",
-              "Price",
-              "Rooms and Beds",
-              "More Filters",
-            ].map((title) => (
-              <button
-                key={uuidv4()}
-                className="px-4 py-2 border rounded-full cursor-pointer hover:shadow-lg active:scale-95 active:bg-gray-100 transition transform duration-100 ease-out"
-              >
-                {title}
-              </button>
-            ))}
-          </div>
-        </section>
+            <div className="hidden lg:inline-flex mb-5 space-x-3 text-gray-800 whitespace-nowrap">
+              {[
+                "Cancellation Flexibility",
+                "Type of place",
+                "Price",
+                "Rooms and Beds",
+                "More Filters",
+              ].map((title) => (
+                <button
+                  key={uuidv4()}
+                  className="px-4 py-2 border rounded-full cursor-pointer hover:shadow-lg active:scale-95 active:bg-gray-100 transition transform duration-100 ease-out"
+                >
+                  {title}
+                </button>
+              ))}
+            </div>
+          </section>
 
-        <section className="flex flex-col">
-          {searchResults?.map(
-            ({ img, location, title, description, star, price, total, long, lat }) => (
-              <InfoCard
-                key={uuidv4()}
-                img={img}
-                location={location}
-                title={title}
-                description={description}
-                star={star}
-                price={price}
-                total={total}
-                long={long}
-                lat={lat}
-              />
-            )
-          )}
-        </section>
-        <section>
-          <Maps />
+          <section className="flex flex-col">
+            {searchResults?.map(
+              ({ img, location, title, description, star, price, total, long, lat }) => (
+                <InfoCard
+                  key={uuidv4()}
+                  img={img}
+                  location={location}
+                  title={title}
+                  description={description}
+                  star={star}
+                  price={price}
+                  total={total}
+                  long={long}
+                  lat={lat}
+                />
+              )
+            )}
+          </section>
+        </div>
+
+        <section className="hidden xl:inline-flex xl:min-w-[600px]">
+          <Maps searchResults={searchResults} />
         </section>
       </main>
       <Footer />

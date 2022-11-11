@@ -44,9 +44,9 @@ const Header = ({ placeholder }) => {
   };
 
   return (
-    <header className="sticky top-0 z-50 grid grid-cols-3 bg-white shadow-md p-5 md:px-5 lg:px-10">
+    <header className="sticky top-0 z-50 grid grid-cols-3 bg-white shadow-md p-2 sm:p-5 md:px-5 lg:px-10">
       <nav
-        className="relative h-10 flex items-center cursor-pointer my-auto"
+        className="relative h-10 flex items-center justify-start cursor-pointer my-auto"
         onClick={() => router.push("/")}
       >
         <Image
@@ -57,7 +57,7 @@ const Header = ({ placeholder }) => {
           style={{ objectFit: "contain", objectPosition: "left" }}
         />
       </nav>
-      <nav className="flex items-center md:border-2 rounded-full py-2 md:shadow-sm">
+      <nav className="flex sm:border-2 rounded-full py-2 sm:shadow-sm">
         <input
           value={searchInput}
           onChange={(e) => setSearchInput(e.target.value)}
@@ -69,8 +69,8 @@ const Header = ({ placeholder }) => {
       </nav>
       <nav className="flex items-center justify-end space-x-4 text-gray-500">
         <p className="hidden md:inline-flex cursor-pointer">Become a host</p>
-        <GlobeAltIcon className="h-6 cursor-pointer" />
-        <div className="flex items-center space-x-2 border-2 p-2 rounded-full min-w-fit">
+        <GlobeAltIcon className="h-6 hidden sm:inline-flex cursor-pointer" />
+        <div className="flex items-center space-x-2 border-2 p-1 sm:p-2 rounded-full min-w-fit">
           <Bars3Icon className="h-6 cursor-pointer" />
           <UserCircleIcon className="h-6 cursor-pointer" />
         </div>

@@ -4,7 +4,7 @@ import { StarIcon } from "@heroicons/react/24/solid";
 
 const InfoCard = ({ img, location, title, description, star, price, total, long, lat }) => {
   return (
-    <div className="flex flex-col sm:flex-row py-7 px-4 border-b cursor-pointer hover:opacity-80 hover:shadow-lg transition duration-200 ease-out first:border-t">
+    <div className="flex flex-col xs:flex-row py-7 px-4 border-b cursor-pointer hover:opacity-80 hover:shadow-lg transition duration-200 ease-out first:border-t">
       <div className="relative h-24 w-40 md:h-52 md:w-80 flex-shrink-0">
         <Image
           src={img}
@@ -15,7 +15,7 @@ const InfoCard = ({ img, location, title, description, star, price, total, long,
           className="rounded-xl"
         />
       </div>
-      <div className="flex flex-col flex-grow sm:pl-5 mt-3 sm:mt-0">
+      <div className="flex flex-col flex-grow xs:pl-5 mt-3 xs:mt-0">
         <div className="flex justify-between">
           <p>{location}</p>
           <HeartIcon className="h-7 cursor-pointer" />
