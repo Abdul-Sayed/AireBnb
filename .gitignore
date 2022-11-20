@@ -33,7 +33,7 @@ yarn-error.log*
 .env*
 .env
 
-next.config.js
+.next.config.js
 
 # vercel
 .vercel

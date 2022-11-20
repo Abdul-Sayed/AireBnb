@@ -53,9 +53,9 @@ const Maps = ({ searchResults }) => {
               closeOnClick={false}
               onClose={() => setSelectedLocation({})}
               anchor="bottom"
-              className="rounded-2xl"
+              style={{ width: "fit-content", height: "fit-content" }}
             >
-              <div className="relative flex flex-col">
+              <div className="relative flex flex-col w-fit h-fit">
                 <Image
                   src={result.img}
                   alt={result.description}
