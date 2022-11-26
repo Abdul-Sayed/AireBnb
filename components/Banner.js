@@ -1,19 +1,35 @@
-import React from "react";
+import { useContext } from "react";
+import { useRouter } from "next/router";
 import Image from "next/image";
 
-const Banner = () => {
+import ListingTypesContext from "../contexts/ListingTypesContext";
+
+const Banner = ({ localListings }) => {
+  const { setListings } = useContext(ListingTypesContext);
+  const router = useRouter();
+
+  const loadListings = () => {
+    router.push("/local-listings");
+    setListings(localListings);
+  };
+
   return (
-    <div className="relative overflow-hidden w-full h-[300px] sm:h-[400px] lg:h-[500px] xl:h-[600px] 2xl:h-[700px]">
+    <div className="relative overflow-hidden w-full h-[300px] sm:h-[400px] lg:h-[500px] xl:h-[600px] 2xl:h-[700px] backdrop-blur-md">
       <Image
-        src="https://a0.muscache.com/im/pictures/57b9f708-bb12-498c-bc33-769f8fc43e63.jpg"
+        src="http://cdn.animalhi.com/2379x1276/20130317/fantasy%20forest%20deer%20fantasy%20art%20drawings%202379x1276%20wallpaper_www.animalhi.com_64.jpg"
         alt="banner"
         fill
-        sizes="1200px"
-        style={{ objectFit: "cover", objectPosition: "bottom" }}
+        sizes="451px"
+        className="object-cover object-center opacity-80 blur-sm z-0"
       />
-      <div className="absolute top-1/2 w-full text-center">
-        <p className="text-sm sm:text-lg">Not sure where to go? Perfect.</p>
-        <button className="text-purple-500 bg-white px-10 py-4 shadow-md rounded-full font-bold my-3 hover:shadow-xl active:scale-90 transition duration-200">
+      <div className="absolute top-1/2 w-full text-center z-10">
+        <p className="text-md sm:text-xl font-medium tracking-wide">
+          Not sure where to go? Perfect.
+        </p>
+        <button
+          className="text-purple-500 bg-white px-10 py-4 shadow-md rounded-full font-bold my-3 hover:shadow-xl hover:scale-105 active:scale-95 transition duration-200 ease-in-out"
+          onClick={loadListings}
+        >
           I&apos;m flexible
         </button>
       </div>
@@ -23,4 +39,4 @@ const Banner = () => {
 
 export default Banner;
 
-// https://links.papareact.com/0fm
+//"https://a0.muscache.com/im/pictures/57b9f708-bb12-498c-bc33-769f8fc43e63.jpg"

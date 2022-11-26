@@ -1,14 +1,78 @@
+import { useState, useEffect } from "react";
 import Head from "next/head";
-import { v4 as uuidv4 } from "uuid";
+import axios from "axios";
+import moment from "moment";
 
 import Header from "../components/Header";
 import Banner from "../components/Banner";
-import Footer from "../components/Footer";
-import SmallCard from "../components/SmallCard";
-import MediumCard from "../components/MediumCard";
+import Explore from "../components/Explore";
+import LiveAnywhere from "../components/LiveAnywhere";
 import LargeCard from "../components/LargeCard";
+import Footer from "../components/Footer";
 
-export default function Home({ exploreData, cardsData }) {
+export default function Home() {
+  const [localListings, setLocalListings] = useState(null);
+
+  function propertyTypes() {
+    const categories = [...new Set(localListings?.map((property) => property.type))];
+    console.log("categories", categories);
+
+    const categorizedListings = categories.map((category) => {
+      return localListings?.filter((property) => property.type === category);
+    });
+    console.log(categorizedListings);
+    return categorizedListings;
+  }
+
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(function (position) {
+      console.log("Latitude is :", position.coords.latitude);
+      console.log("Longitude is :", position.coords.longitude);
+
+      window.localStorage.getItem("listings");
+      const cachedLocalListings = JSON.parse(window.localStorage.getItem("listings"));
+      console.log("read from cache:", cachedLocalListings);
+      console.log(cachedLocalListings);
+      if (cachedLocalListings) {
+        setLocalListings(
+          cachedLocalListings?.filter((property) => property.id.toString().length === 8)
+        );
+      } else {
+        const options = {
+          method: "GET",
+          url: "https://airbnb13.p.rapidapi.com/search-geo",
+          params: {
+            ne_lat: position.coords.latitude + 1,
+            ne_lng: position.coords.longitude + 1,
+            sw_lat: position.coords.latitude - 1,
+            sw_lng: position.coords.longitude - 1,
+            checkin: moment().add(1, "days").format("YYYY-MM-DD"),
+            checkout: moment().add(2, "days").format("YYYY-MM-DD"),
+            adults: "1",
+            page: "1",
+          },
+          headers: {
+            "X-RapidAPI-Key": process.env.airbnbApiKey,
+            "X-RapidAPI-Host": process.env.airbnbApiHost,
+          },
+        };
+
+        axios
+          .request(options)
+          .then(function (response) {
+            console.log(response.data.results);
+            window.localStorage.setItem("listings", JSON.stringify(response.data.results));
+            setLocalListings(
+              response.data.results?.filter((property) => property.id.toString().length === 8)
+            );
+          })
+          .catch(function (error) {
+            console.error(error);
+          });
+      }
+    });
+  }, []);
+
   return (
     <>
       <Head>
@@ -18,48 +82,13 @@ export default function Home({ exploreData, cardsData }) {
       </Head>
 
       <Header />
-      <Banner />
+      <Banner localListings={localListings} />
       <main className="max-w-7xl mx-auto px-8 sm:px-16">
-        <section className="pt-6">
-          <h2 className="text-4xl font-semibold pb-5">Explore Nearby</h2>
-          <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {exploreData?.map(({ img, location, distance }) => (
-              <li key={uuidv4()}>
-                <SmallCard img={img} location={location} distance={distance} />
-              </li>
-            ))}
-          </ul>
-        </section>
-
-        <section className="pt-6">
-          <h2 className="text-4xl font-semibold py-8">Live Anywhere</h2>
-          <ul className="flex space-x-3 overflow-scroll scrollbar-hide pb-3">
-            {cardsData?.map(({ img, title }) => (
-              <li key={uuidv4()}>
-                <MediumCard img={img} title={title} />
-              </li>
-            ))}
-          </ul>
-        </section>
-
-        <LargeCard
-          img="https://a0.muscache.com/im/pictures/2da67c1c-0c61-4629-8798-1d4de1ac9291.jpg?im_w=1440"
-          title="The Greatest Outdoors"
-          description="Wishlists curated by Airbnb"
-          buttonText="Get Inspired"
-        />
+        <Explore localListings={localListings} />
+        <LiveAnywhere propertyTypes={propertyTypes()} />
+        <LargeCard />
       </main>
-
-      <Footer></Footer>
+      <Footer />
     </>
   );
 }
-
-export const getStaticProps = async () => {
-  const exploreData = await fetch("https://www.jsonkeeper.com/b/4G1G").then((res) => res.json());
-  const cardsData = await fetch("https://www.jsonkeeper.com/b/VHHT").then((res) => res.json());
-
-  return {
-    props: { exploreData, cardsData },
-  };
-};

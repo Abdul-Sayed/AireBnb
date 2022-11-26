@@ -1,5 +1,7 @@
 import { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
+import moment from "moment";
 import {
   MagnifyingGlassIcon,
   GlobeAltIcon,
@@ -35,8 +37,8 @@ const Header = ({ placeholder }) => {
       pathname: "/search",
       query: {
         location: searchInput,
-        startDate: startDate.toISOString(),
-        endDate: endDate.toDateString(),
+        startDate: moment(startDate).format("YYYY-MM-DD"),
+        endDate: moment(endDate).format("YYYY-MM-DD"),
         numberGuests,
       },
     });
@@ -45,17 +47,17 @@ const Header = ({ placeholder }) => {
 
   return (
     <header className="sticky top-0 z-50 grid grid-cols-3 bg-white shadow-md p-2 sm:p-5 md:px-5 lg:px-10">
-      <nav
-        className="relative h-10 flex items-center justify-start cursor-pointer my-auto"
-        onClick={() => router.push("/")}
-      >
-        <Image
-          src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/Airbnb_Logo_B%C3%A9lo.svg/2560px-Airbnb_Logo_B%C3%A9lo.svg.png"
-          alt="Airbnb Logo"
-          fill
-          sizes="2049px"
-          style={{ objectFit: "contain", objectPosition: "left" }}
-        />
+      <nav className="relative h-10 flex items-center justify-start my-auto">
+        <Link href="/">
+          <Image
+            src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/Airbnb_Logo_B%C3%A9lo.svg/2560px-Airbnb_Logo_B%C3%A9lo.svg.png"
+            alt="Airbnb Logo"
+            fill
+            sizes="2049px"
+            style={{ objectFit: "contain", objectPosition: "left" }}
+            className="cursor-pointer"
+          />
+        </Link>
       </nav>
       <nav className="flex sm:border-2 rounded-full py-2 sm:shadow-sm">
         <input
@@ -111,5 +113,3 @@ const Header = ({ placeholder }) => {
 };
 
 export default Header;
-
-// https://links.papareact.com/qd3

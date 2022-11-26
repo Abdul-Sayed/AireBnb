@@ -5,11 +5,14 @@ import { v4 as uuidv4 } from "uuid";
 import Image from "next/image";
 
 const Maps = ({ searchResults }) => {
+  console.log(searchResults);
+
   const coordinates = searchResults.map((result) => ({
-    longitude: result.long,
+    longitude: result.lng,
     latitude: result.lat,
   }));
   const center = getCenter(coordinates);
+  console.log(center);
 
   const [selectedLocation, setSelectedLocation] = useState({});
   const [viewport, setViewport] = useState({
@@ -30,7 +33,7 @@ const Maps = ({ searchResults }) => {
       {searchResults.map((result) => (
         <div key={uuidv4()}>
           <Marker
-            longitude={result.long}
+            longitude={result.lng}
             latitude={result.lat}
             anchor="bottom"
             offsetLeft={-20}
@@ -46,9 +49,9 @@ const Maps = ({ searchResults }) => {
             </p>
           </Marker>
 
-          {selectedLocation.long == result.long ? (
+          {selectedLocation.lng == result.lng ? (
             <Popup
-              longitude={result.long}
+              longitude={result.lng}
               latitude={result.lat}
               closeOnClick={false}
               onClose={() => setSelectedLocation({})}
@@ -57,16 +60,16 @@ const Maps = ({ searchResults }) => {
             >
               <div className="relative flex flex-col w-fit h-fit">
                 <Image
-                  src={result.img}
-                  alt={result.description}
+                  src={result.images[0]}
+                  alt={result.type}
                   width="200"
                   height="200"
                   sizes="640px"
                   className="max-w-[200px] max-h-[200px]"
                 />
                 <div className="mt-2">
-                  <p className="text-lg">{result.location}</p>
-                  <p className="text-sm text-gray-700">{result.title}</p>
+                  <p className="text-lg">{result.city}</p>
+                  <p className="text-sm text-gray-700">{result.name}</p>
                 </div>
               </div>
             </Popup>

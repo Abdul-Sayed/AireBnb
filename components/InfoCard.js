@@ -1,11 +1,15 @@
 import Image from "next/image";
-import { HeartIcon } from "@heroicons/react/24/outline";
 import { StarIcon } from "@heroicons/react/24/solid";
 
-const InfoCard = ({ img, location, title, description, star, price, total, long, lat }) => {
+const InfoCard = ({ img, location, title, description, star, price, currency, total, url }) => {
   return (
-    <div className="flex flex-col xs:flex-row py-7 px-4 border-b cursor-pointer hover:opacity-80 hover:shadow-lg transition duration-200 ease-out first:border-t">
-      <div className="relative h-24 w-40 md:h-52 md:w-80 flex-shrink-0">
+    <a
+      href={url}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="flex flex-col xs:flex-row py-7 px-4 border-b cursor-pointer hover:opacity-80 hover:shadow-lg transition duration-200 ease-out first:border-t"
+    >
+      <div className="relative w-72 h-52 sm:w-80 sm:h-56 md:w-96 md:h-60 flex-shrink-0">
         <Image
           src={img}
           alt={description}
@@ -16,28 +20,27 @@ const InfoCard = ({ img, location, title, description, star, price, total, long,
         />
       </div>
       <div className="flex flex-col flex-grow xs:pl-5 mt-3 xs:mt-0">
-        <div className="flex justify-between">
-          <p>{location}</p>
-          <HeartIcon className="h-7 cursor-pointer" />
-        </div>
-        <h4 className="text-xl">{title}</h4>
-
-        <div className="border-b w-10 pt-2" />
-
-        <p className="pt-2 text-sm text-gray-500 flex-grow">{description}</p>
+        <h4 className="text-xl self-end mb-2">{location}</h4>
+        <h3 className="text-lg">{title}</h3>
+        <div className="border-b w-10 pt-3" />
+        <p className="pt-2 text-md text-gray-500 flex-grow">{description}</p>
 
         <div className="flex justify-between items-end pt-5">
           <p className="flex items-center">
             <StarIcon className="h-5 text-red-400" /> {star}
           </p>
 
-          <div>
-            <p className="text-lg lg:text-2xl font-semibold pb-2">{price}</p>
-            <p className="text-right font-extralight">{total}</p>
+          <div className="hidden sm:inline-block">
+            <p className="text-lg lg:text-xl font-semibold pb-2">
+              {price} {currency} / night
+            </p>
+            <p className="text-right font-extralight">
+              {total} {currency} total
+            </p>
           </div>
         </div>
       </div>
-    </div>
+    </a>
   );
 };
 

@@ -13,12 +13,8 @@ Index
 │───Header.js
 │   └───DateRangePicker
 │
-└───Feed.js
-│   │
-│   │───SideBar.js
-│   └───Videos.js
-│       └───ChannelCard.js  <==> links to ChannelDetail component
-│       └───VideoCard.js  <==> links to VideoDetail component
+└───Banner.js
+│   └───Links to a list of properties
 │
 └───SearchFeed.js
 │  └───Videos.js
@@ -71,7 +67,9 @@ Search
 
 #### Index Page
 
-> The root of the application is the index page and it renders the header component.
+> The root of the application is the index page.
+> It renders the header, banner, and footer components.
+> It requests the user's location and if accepted, fetches local airbnb listings inside useEffect. If local listings are available, the Explore Nearby and Live Anywhere sections populate. To avoid redundant api calls, local listings are cached into localStorage so subsequent visits to the homepage read cached data.
 
 ### Feed
 

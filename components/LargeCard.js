@@ -1,7 +1,13 @@
 import React from "react";
 import Image from "next/image";
 
-const LargeCard = ({ img, title, description, buttonText }) => {
+const LargeCard = () => {
+  const img =
+    "https://a0.muscache.com/im/pictures/2da67c1c-0c61-4629-8798-1d4de1ac9291.jpg?im_w=1440";
+  const title = "The Greatest Outdoors";
+  const description = "Wishlists curated by Airbnb";
+  const buttonText = "Get Inspired";
+
   return (
     <figure className="relative py-16">
       <div className="relative h-96 min-w-[300px]">
