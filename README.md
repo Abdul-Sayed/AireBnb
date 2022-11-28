@@ -1,6 +1,6 @@
 # Aire Bnb
 
-## Airbnb listings search page, using NextJS, Tailwind CSS, Date Picker, Mapbox, Rapid Api
+## Airbnb listings search page, using NextJS, React, React Context, Tailwind CSS, Date Picker, Mapbox, GeoLib, Rapid Api, Axios, React Slick Carousel, NextJS Progress Bar, MomentJS, Lodash
 
 `Live link: aire-bnb.vercel.app`  
 `API: https://airbnb13.p.rapidapi.com/`
@@ -9,94 +9,101 @@
 
 ```
 Index
-│
-│───Header.js
-│   └───DateRangePicker
-│
-└───Banner.js
-│   └───Links to a list of properties
-│
-└───SearchFeed.js
-│  └───Videos.js
-│       └───ChannelCard.js  <==> links to ChannelDetail component
-│       └───VideoCard.js  <==> links to VideoDetail component
-│
-└───VideoDetail.js
-│  └───Videos.js
-│      └───ChannelCard.js  <==> links to ChannelDetail component
-│      └───VideoCard.js  <==> links to VideoDetail component
-│
-└───ChannelDetail.js
-│  └───ChannelCard.js  <==> links to ChannelDetail component
-│  └───Videos.js
-│      └───ChannelCard.js  <==> links to ChannelDetail component
-│      └───VideoCard.js  <==> links to VideoDetail component
-│
+|
+├──Header.js <==> routes to search page
+|  └───DateRangePicker
+|
+├───Banner.js <==> routes to local-listings page
+|
+├───Explore.js
+|   └───SmallCard.js
+|
+├───LiveAnywhere.js
+|   └───MediumCard.js <==> routes to local-listings page
+|
+├───LargeCard.js
+|
+└───Footer.js
+
+LocalListings
+|
+├──Header.js <==> routes to search page
+|  └───DateRangePicker
+|
+├───InfoCard.js
+|
+├───Maps.js
+|
 └───Footer.js
 
 Search
-│
-│───Navbar.js
-│   └───SearchBar.js  <==> navigates to SearchFeed component
-│
-└───Feed.js
-│   │
-│   │───SideBar.js
-│   └───Videos.js
-│       └───ChannelCard.js  <==> links to ChannelDetail component
-│       └───VideoCard.js  <==> links to VideoDetail component
-│
-└───SearchFeed.js
-│  └───Videos.js
-│       └───ChannelCard.js  <==> links to ChannelDetail component
-│       └───VideoCard.js  <==> links to VideoDetail component
-│
-└───VideoDetail.js
-│  └───Videos.js
-│      └───ChannelCard.js  <==> links to ChannelDetail component
-│      └───VideoCard.js  <==> links to VideoDetail component
-│
-└───ChannelDetail.js
-│  └───ChannelCard.js  <==> links to ChannelDetail component
-│  └───Videos.js
-│      └───ChannelCard.js  <==> links to ChannelDetail component
-│      └───VideoCard.js  <==> links to VideoDetail component
-│
+|
+├──Header.js <==> routes to search page
+|  └───DateRangePicker
+|
+├───InfoCard.js
+|
+├───Maps.js
+|
 └───Footer.js
 ```
 
 #### Index Page
 
-> The root of the application is the index page.
-> It renders the header, banner, and footer components.
-> It requests the user's location and if accepted, fetches local airbnb listings inside useEffect. If local listings are available, the Explore Nearby and Live Anywhere sections populate. To avoid redundant api calls, local listings are cached into localStorage so subsequent visits to the homepage read cached data.
-
-### Feed
-
 Route="/"
 
-> Renders the Videos component, as well as the SideBar component on the left. Clicking a keyword in the sidebar will fetch the relevant videos and update the video feed.
->
-> SideBar component: Renders a list of popular keywords. Clicking a keyword will update the Feed component.
->
-> Videos component: Renders the video feed list. Checks the data for each item if its a channel or a video, and will render a ChannelCard or a VideoCard respectively.
->
-> > ChannelCard / VideoCard components render the details of that item and clicking it routes to the ChannelDetail / VideoDetail pages, passing the id of the channel / video in the route.
+> The root of the application is the index page.
+> It requests the user's location and if accepted, fetches local airbnb listings inside useEffect. If local listings are available, the Explore Nearby and Live Anywhere sections populate. To avoid redundant api calls, local listings are cached into localStorage so subsequent visits to the homepage read cached data. Error handling routes to the Nextjs error page if the api call fails.
+> Renders the header, banner (passing it localListings), explore (passing it the first 8 localListings), live anywhere (passing it propertyTypes), largecard, and footer components.
 
-### SearchFeed
+#### Header
 
-Route="/search/:_searchTerm_"
+> Renders a navbar with an airbnb logo which links to the homepage, a location search input, and some icons. If the search input is being typed in, a DateRangePicker component is rendered which sets a start and end date, as well as the number of guests. On clicking the search button, the search page is routed to and the location, start/end dates, and number of guests are passed as query params.
 
-> The SearchFeed component will recieve the search term from route params, and fetch videos related to the search term. It will then render the Videos component, passing in a video feed list.
+#### Banner
 
-### VideoDetail
+> Recieves localListings prop from index page and on click of the banner, sets the localListings into context and routes to the local-listings page
 
-Route="/video/:_id_"
+#### Explore
 
-> The VideoDetail component obtains the video id from route params and fetches the video's data as well as related videos. It plays the video and renders the Videos component, passing in a video feed list of related videos.
+> Recieves localListings prop from index page and renders the SmallCard component for each listing, passing in the image, city, type, and url
 
-### ChannelDetail
+#### SmallCard
 
-Route="/channel/:_id_"
+> Recieves image, city, type, and url props from Explore component and renders that data in a small card
 
-> The ChannelDetail component obtains the channel Id from the route params and fetches details of the channel as well as the channel's videos. It renders the ChannelCard component, passing it the channel details, as well as the Videos component, passing it the list of videos.
+#### LiveAnywhere
+
+> Recieves propertyTypes prop from index page and renders a MediumCard for each propertyType array. It passes MediumCard an image, the proprty's type, and the propertyType array
+
+#### MediumCard
+
+> Recieves image, type, and properties array from LiveAnywhere component. It renders a the image and type in a medium card. On click, it sets the properties into context and routes to the local-listings page.
+
+#### LargeCard
+
+> Renders a large image and contains a button that links to airbnb.com
+
+#### Footer
+
+> Renders informational links to various parts of airbnb.com
+
+#### LocalListings Page
+
+Route="/local-listings"
+
+> Renders the header, InfoCard, Maps, and footer components. Reads listing data from context. For each of the listings, it renders an infocard component, passing it details about the listing. It aslo renders a maps component, passing in the lisings data. It also renders a section that contains a list of buttons that filter the listings data by different metrics.
+
+#### Search Page
+
+Route="/search"
+
+> Renders the header, InfoCard, Maps, and footer components. Reads location, startDate, endDate, numberGuests from router query params. Runs getServerSideProps, fetches airbnb lisitng data based on those query params. For each of the listings, it renders an infocard component, passing it details about the listing. It aslo renders a maps component, passing in the lisings data. It also renders a section that contains a list of buttons that filter the listings data by different metrics.
+
+#### InfoCard
+
+> Recieves details about a listing as props and renders them in a card. Displays an image carousel usinf react slick slider.
+
+#### Maps
+
+> Recieves listings data as props and renders a Map components from react-map-gl. The map is centered on the average coordinated of each listing, computed using geolib. The map renders a marker for each listing, based in the listing's coordinates. Clicking a marker opens the listing's image as a popup.

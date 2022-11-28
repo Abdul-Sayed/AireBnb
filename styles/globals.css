@@ -13,3 +13,16 @@ body {
 .mapboxgl-popup-close-button {
   font-size: 20px;
 }
+
+.rdrDefinedRangesWrapper {
+  display: none;
+}
+
+.slick-prev {
+  left: 3% !important;
+  z-index: 1;
+}
+.slick-next {
+  right: 3% !important;
+  z-index: 1;
+}

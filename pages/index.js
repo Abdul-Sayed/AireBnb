@@ -1,5 +1,6 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Head from "next/head";
+import Error from "next/error";
 import axios from "axios";
 import moment from "moment";
 
@@ -12,27 +13,22 @@ import Footer from "../components/Footer";
 
 export default function Home() {
   const [localListings, setLocalListings] = useState(null);
+  const [error, setError] = useState(false);
 
   function propertyTypes() {
+    // return an array of arrays, each array containing objects of a specific listing type
     const categories = [...new Set(localListings?.map((property) => property.type))];
-    console.log("categories", categories);
-
     const categorizedListings = categories.map((category) => {
       return localListings?.filter((property) => property.type === category);
     });
-    console.log(categorizedListings);
     return categorizedListings;
   }
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(function (position) {
-      console.log("Latitude is :", position.coords.latitude);
-      console.log("Longitude is :", position.coords.longitude);
-
       window.localStorage.getItem("listings");
       const cachedLocalListings = JSON.parse(window.localStorage.getItem("listings"));
       console.log("read from cache:", cachedLocalListings);
-      console.log(cachedLocalListings);
       if (cachedLocalListings) {
         setLocalListings(
           cachedLocalListings?.filter((property) => property.id.toString().length === 8)
@@ -60,14 +56,17 @@ export default function Home() {
         axios
           .request(options)
           .then(function (response) {
-            console.log(response.data.results);
-            window.localStorage.setItem("listings", JSON.stringify(response.data.results));
-            setLocalListings(
-              response.data.results?.filter((property) => property.id.toString().length === 8)
-            );
+            if (!response.error) {
+              window.localStorage.setItem("listings", JSON.stringify(response.data.results));
+              setLocalListings(
+                response.data.results?.filter((property) => property.id.toString().length === 8)
+              );
+            } else {
+              setError(true);
+            }
           })
           .catch(function (error) {
-            console.error(error);
+            setError(true);
           });
       }
     });
@@ -81,14 +80,22 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Header />
-      <Banner localListings={localListings} />
-      <main className="max-w-7xl mx-auto px-8 sm:px-16">
-        <Explore localListings={localListings} />
-        <LiveAnywhere propertyTypes={propertyTypes()} />
-        <LargeCard />
-      </main>
-      <Footer />
+      {error ? (
+        <Error />
+      ) : (
+        <React.Fragment>
+          <Header />
+          <main>
+            <Banner localListings={localListings} />
+            <div className="max-w-7xl mx-auto px-8 sm:px-16">
+              <Explore localListings={localListings?.slice(0, 8)} />
+              <LiveAnywhere propertyTypes={propertyTypes()} />
+              <LargeCard />
+            </div>
+          </main>
+          <Footer />
+        </React.Fragment>
+      )}
     </>
   );
 }

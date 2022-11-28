@@ -5,14 +5,11 @@ import { v4 as uuidv4 } from "uuid";
 import Image from "next/image";
 
 const Maps = ({ searchResults }) => {
-  console.log(searchResults);
-
   const coordinates = searchResults.map((result) => ({
     longitude: result.lng,
     latitude: result.lat,
   }));
   const center = getCenter(coordinates);
-  console.log(center);
 
   const [selectedLocation, setSelectedLocation] = useState({});
   const [viewport, setViewport] = useState({
