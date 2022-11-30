@@ -28,8 +28,8 @@ export default function Home() {
     navigator.geolocation.getCurrentPosition(function (position) {
       window.localStorage.getItem("listings");
       const cachedLocalListings = JSON.parse(window.localStorage.getItem("listings"));
-      console.log("read from cache:", cachedLocalListings);
       if (cachedLocalListings) {
+        console.log("read from cache:", cachedLocalListings);
         setLocalListings(
           cachedLocalListings?.filter((property) => property.id.toString().length === 8)
         );
