@@ -15,11 +15,9 @@ const Banner = ({ localListings }) => {
 
   return (
     <div className="relative overflow-hidden w-full h-[300px] sm:h-[400px] lg:h-[500px] xl:h-[600px] 2xl:h-[700px] backdrop-blur-md">
-      <Image
+      <img
         src="http://cdn.animalhi.com/2379x1276/20130317/fantasy%20forest%20deer%20fantasy%20art%20drawings%202379x1276%20wallpaper_www.animalhi.com_64.jpg"
         alt="banner"
-        fill
-        sizes="451px"
         className="object-cover object-center opacity-80 blur-sm z-0"
       />
       <div className="absolute top-1/2 w-full text-center z-10">
