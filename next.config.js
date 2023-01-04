@@ -15,6 +15,7 @@ const nextConfig = {
       "tii.imgix.net",
       "www.roadaffair.com",
       "cdn.animalhi.com",
+      "img.freepik.com",
     ],
   },
   env: {
