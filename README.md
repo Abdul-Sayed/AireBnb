@@ -2,7 +2,8 @@
 
 ## Airbnb listings search page, using NextJS, React, React Context, Tailwind CSS, Date Picker, Mapbox, GeoLib, Rapid Api, Axios, React Slick Carousel, NextJS Progress Bar, MomentJS, Lodash
 
-API: `https://airbnb13.p.rapidapi.com/`
+API: `https://airbnb13.p.rapidapi.com/`  
+Live Link: `https://aire-bnb.vercel.app `
 
 ### Pages and Routes
 
